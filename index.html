@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plantilla 2: Sermón Temático</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fa;
+      padding: 30px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      resize: vertical;
+    }
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 12px;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #21689a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Plantilla 2: Sermón Temático</h1>
+
+    <label for="tema">Texto Central del Mensaje</label>
+    <input type="text" id="tema" placeholder="Ej: Filipenses 4:13" />
+
+    <label for="frase">Frase de Impacto</label>
+    <input type="text" id="frase" placeholder="Ej: La fe no elimina las batallas, la fe te da fuerza en medio de ellas." />
+
+    <label for="versiculos">Versículos Claves por Punto</label>
+    <textarea id="versiculos" rows="4" placeholder="Escribe aquí los versículos clave que respaldan cada punto..."></textarea>
+
+    <label for="puntos">Puntos del Mensaje</label>
+    <textarea id="puntos" rows="6" placeholder="1. Dios fortalece a los débiles&#10;2. La fe activa el poder de Dios&#10;3. Ninguna situación es mayor que su promesa..."></textarea>
+
+    <label for="aplicacion">Aplicación Personal + Llamado</label>
+    <textarea id="aplicacion" rows="4" placeholder="¿Qué decisión debe tomar el oyente? ¿Cómo aplicar esta palabra hoy mismo?"></textarea>
+
+    <button onclick="guardarComoWord()">Guardar Sermón en Word</button>
+  </div>
+
+  <script>
+    function guardarComoWord() {
+      const tema = document.getElementById("tema").value;
+      const frase = document.getElementById("frase").value;
+      const versiculos = document.getElementById("versiculos").value;
+      const puntos = document.getElementById("puntos").value;
+      const aplicacion = document.getElementById("aplicacion").value;
+
+      const contenidoHTML = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office'
+              xmlns:w='urn:schemas-microsoft-com:office:word'
+              xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset='utf-8'><title>Plantilla Sermón</title></head><body>
+          <h1 style="text-align:center;">Plantilla 2: Sermón Temático</h1>
+          <p><strong>Texto Central:</strong> ${tema}</p>
+          <p><strong>Frase de Impacto:</strong> ${frase}</p>
+          <p><strong>Versículos Clave:</strong><br>${versiculos.replace(/\n/g, "<br>")}</p>
+          <p><strong>Puntos del Mensaje:</strong><br>${puntos.replace(/\n/g, "<br>")}</p>
+          <p><strong>Aplicación + Llamado:</strong><br>${aplicacion.replace(/\n/g, "<br>")}</p>
+        </body></html>
+      `;
+
+      const blob = new Blob(['\ufeff', contenidoHTML], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const enlace = document.createElement('a');
+      enlace.href = url;
+      enlace.download = `${tema || "sermon_tematico"}.doc`;
+      document.body.appendChild(enlace);
+      enlace.click();
+      document.body.removeChild(enlace);
+    }
+  </script>
+</body>
+</html>
